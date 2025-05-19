@@ -274,7 +274,32 @@
             } else if (name_num == 0) {
             alert("학번과 이름을 입력해주세요.");
             } else {
-            alert(name_num + ", " + selectedProducts.join(', ') + ", " + totalPrice.toLocaleString() + "원");
+                const data = {
+      name: name_num,
+      products: selectedProducts.join(', '),
+      totalPrice: totalPrice
+    };
+
+    fetch("🔗여기에_AppsScript_웹앱_URL_붙이기", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(res => res.text())
+    .then(result => {
+      alert("주문이 완료되었습니다!\n" + result);
+      document.getElementById("form_box").reset();
+      document.querySelectorAll('.product-item.selected').forEach(item => item.classList.remove('selected'));
+      document.querySelector('.selected-products').textContent = "선택한 상품: 없음";
+      document.querySelector('.total-price').textContent = "선택한 상품의 총 가격: ₩ 0";
+      selectedProducts = [];
+      totalPrice = 0;
+    })
+    .catch(error => {
+      alert("에러 발생: " + error);
+    });
   }
 }
 
